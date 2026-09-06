@@ -365,7 +365,7 @@ fn main() -> eframe::Result<()> {
     };
 
     eframe::run_native(
-        "Cortinarius: The Framework Desktop Fan Controller!",
+        "DCortinarius: The Framework Desktop Fan Controller!",
         native_options,
         Box::new(|_cc| Ok(Box::new(FanRgbApp::new()))),
     )
