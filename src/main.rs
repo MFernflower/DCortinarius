@@ -4,11 +4,9 @@ use framework_lib::chromium_ec::commands::RgbS;
 
 const COLOR_COUNT: usize = 8;
 const START_KEY: u8 = 0;
-
 const PRESET_TOXIC_BLOOM: [u32; COLOR_COUNT] = [
     0x39FF14, 0x7FFF00, 0xFFFF00, 0x00FF00, 0x00FF7F, 0x00FFAA, 0xFF10F0, 0x9D00FF,
 ];
-
 const PRESET_CRIMSON_STORM: [u32; COLOR_COUNT] = [
     0xDC143C, 0xB22222, 0xFF4500, 0x8B0000, 0xFF6347, 0xA52A2A, 0xCD5C5C, 0xFF1493,
 ];
@@ -118,7 +116,7 @@ struct FanRgbApp {
 
 impl FanRgbApp {
     fn new() -> Self {
-        let colors = PRESET_CRIMSON_STORM
+        let colors = PRESET_TOXIC_BLOOM
             .iter()
             .map(|color| color32_from_rgb(rgb_from_u32(*color)))
             .collect::<Vec<_>>()
@@ -188,7 +186,7 @@ impl FanRgbApp {
                 if self.led_only {
                     format!("Success!")
                 } else {
-                    format!("Success!, main fan set to {}%", self.fan_duty)
+                    format!("Success! The main fan is now set to {}%", self.fan_duty)
                 },
             ),
             Err(err) => self.set_status(StatusKind::Error, format_ec_error(&err)),
