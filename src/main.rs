@@ -4,6 +4,11 @@ use framework_lib::chromium_ec::commands::RgbS;
 
 const COLOR_COUNT: usize = 8;
 const START_KEY: u8 = 0;
+
+const PRESET_TOXIC_BLOOM: [u32; COLOR_COUNT] = [
+    0x39FF14, 0x7FFF00, 0xFFFF00, 0x00FF00, 0x00FF7F, 0x00FFAA, 0xFF10F0, 0x9D00FF,
+];
+
 const PRESET_CRIMSON_STORM: [u32; COLOR_COUNT] = [
     0xDC143C, 0xB22222, 0xFF4500, 0x8B0000, 0xFF6347, 0xA52A2A, 0xCD5C5C, 0xFF1493,
 ];
@@ -18,9 +23,6 @@ const PRESET_AUTUMN_EMBERS: [u32; COLOR_COUNT] = [
 ];
 const PRESET_FROST_DREAM: [u32; COLOR_COUNT] = [
     0xE0FFFF, 0xB0E0E6, 0x87CEEB, 0x6495ED, 0x4169E1, 0x00BFFF, 0x00CED1, 0x5F9EA0,
-];
-const PRESET_TOXIC_BLOOM: [u32; COLOR_COUNT] = [
-    0x39FF14, 0x7FFF00, 0xFFFF00, 0x00FF00, 0x00FF7F, 0x00FFAA, 0xFF10F0, 0x9D00FF,
 ];
 
 /// Convert a raw 24-bit RGB value into the EC payload struct.
@@ -184,12 +186,9 @@ impl FanRgbApp {
             Ok(()) => self.set_status(
                 StatusKind::Success,
                 if self.led_only {
-                    format!("Wrote {} colors", COLOR_COUNT)
+                    format!("Success!")
                 } else {
-                    format!(
-                        "Wrote {} colors, main fan at {}%",
-                        COLOR_COUNT, self.fan_duty
-                    )
+                    format!("Success!, main fan set to {}%", self.fan_duty)
                 },
             ),
             Err(err) => self.set_status(StatusKind::Error, format_ec_error(&err)),
