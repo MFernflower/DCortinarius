@@ -4,32 +4,23 @@ use framework_lib::chromium_ec::commands::RgbS;
 
 const COLOR_COUNT: usize = 8;
 const START_KEY: u8 = 0;
-const PRESET_SPECTRUM: [u32; COLOR_COUNT] = [
-    0xFF0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0x4B0082, 0x9400D3, 0xFFFFFF,
+const PRESET_CRIMSON_STORM: [u32; COLOR_COUNT] = [
+    0xDC143C, 0xB22222, 0xFF4500, 0x8B0000, 0xFF6347, 0xA52A2A, 0xCD5C5C, 0xFF1493,
 ];
-const PRESET_MATRIX: [u32; COLOR_COUNT] = [
-    0x006622, 0x00FF66, 0x009944, 0x00CC44, 0x00CC66, 0x009933, 0x006633, 0x00FF99,
+const PRESET_DEEP_OCEAN: [u32; COLOR_COUNT] = [
+    0x001A4D, 0x003366, 0x004D99, 0x0066CC, 0x1A7FD0, 0x339FFF, 0x4DA6FF, 0x66B3FF,
 ];
-const PRESET_AZURE: [u32; COLOR_COUNT] = [
-    0x2B2BFF, 0x0C0CFF, 0x4370FF, 0x1A1AFF, 0x5880FF, 0x3C3CFF, 0x2E5FFF, 0x1A4FFF,
+const PRESET_MIDNIGHT_NEON: [u32; COLOR_COUNT] = [
+    0x1A1A2E, 0x16213E, 0x0F3460, 0x00D9FF, 0xE94560, 0x00F5FF, 0xFF006E, 0x8338EC,
 ];
-const PRESET_NEON_CITY: [u32; COLOR_COUNT] = [
-    0xFF0099, 0xFF00FF, 0x8A2BE2, 0x00FFFF, 0xFF1493, 0x00CCFF, 0x9400D3, 0x00BFFF,
+const PRESET_AUTUMN_EMBERS: [u32; COLOR_COUNT] = [
+    0x8B4513, 0xDC8C3A, 0xFF7F50, 0xD2691E, 0xFF8C00, 0xA0522D, 0xCD853F, 0xFF9500,
 ];
-const PRESET_SOLAR_FLARE: [u32; COLOR_COUNT] = [
-    0xFFD700, 0xFF4500, 0xFF7F50, 0xFFA500, 0xFFFF00, 0xFF8C00, 0xFF6347, 0xFFD700,
+const PRESET_FROST_DREAM: [u32; COLOR_COUNT] = [
+    0xE0FFFF, 0xB0E0E6, 0x87CEEB, 0x6495ED, 0x4169E1, 0x00BFFF, 0x00CED1, 0x5F9EA0,
 ];
-const PRESET_ABYSS: [u32; COLOR_COUNT] = [
-    0x0000FF, 0x191970, 0x4169E1, 0x000080, 0x1E90FF, 0x00008B, 0x00BFFF, 0x0000CD,
-];
-const PRESET_CANOPY: [u32; COLOR_COUNT] = [
-    0x32CD32, 0x006400, 0x8FBC8F, 0x228B22, 0x556B2F, 0x90EE90, 0x6B8E23, 0x008000,
-];
-const PRESET_CYANO: [u32; COLOR_COUNT] = [
-    0x006680, 0x001A33, 0x4DD556, 0x00334D, 0x1A9C6E, 0x00807A, 0x33B862, 0x004D66,
-];
-const PRESET_ALGA: [u32; COLOR_COUNT] = [
-    0x006680, 0x0C0CFF, 0x4DD556, 0x1A1AFF, 0x1A9C6E, 0x3C3CFF, 0x33B862, 0x1A4FFF,
+const PRESET_TOXIC_BLOOM: [u32; COLOR_COUNT] = [
+    0x39FF14, 0x7FFF00, 0xFFFF00, 0x00FF00, 0x00FF7F, 0x00FFAA, 0xFF10F0, 0x9D00FF,
 ];
 
 /// Convert a raw 24-bit RGB value into the EC payload struct.
@@ -125,7 +116,7 @@ struct FanRgbApp {
 
 impl FanRgbApp {
     fn new() -> Self {
-        let colors = PRESET_SPECTRUM
+        let colors = PRESET_CRIMSON_STORM
             .iter()
             .map(|color| color32_from_rgb(rgb_from_u32(*color)))
             .collect::<Vec<_>>()
@@ -234,32 +225,23 @@ impl eframe::App for FanRgbApp {
             .show(ctx, |ui| {
                 ui.heading("Presets");
 
-                if ui.button("Spectrum").clicked() {
-                    self.apply_palette(&PRESET_SPECTRUM);
+                if ui.button("Crimson Storm").clicked() {
+                    self.apply_palette(&PRESET_CRIMSON_STORM);
                 }
-                if ui.button("Matrix").clicked() {
-                    self.apply_palette(&PRESET_MATRIX);
+                if ui.button("Deep Ocean").clicked() {
+                    self.apply_palette(&PRESET_DEEP_OCEAN);
                 }
-                if ui.button("Azure").clicked() {
-                    self.apply_palette(&PRESET_AZURE);
+                if ui.button("Midnight Neon").clicked() {
+                    self.apply_palette(&PRESET_MIDNIGHT_NEON);
                 }
-                if ui.button("Neon City").clicked() {
-                    self.apply_palette(&PRESET_NEON_CITY);
+                if ui.button("Autumn Embers").clicked() {
+                    self.apply_palette(&PRESET_AUTUMN_EMBERS);
                 }
-                if ui.button("Solar Flare").clicked() {
-                    self.apply_palette(&PRESET_SOLAR_FLARE);
+                if ui.button("Frost Dream").clicked() {
+                    self.apply_palette(&PRESET_FROST_DREAM);
                 }
-                if ui.button("Abyss").clicked() {
-                    self.apply_palette(&PRESET_ABYSS);
-                }
-                if ui.button("Canopy").clicked() {
-                    self.apply_palette(&PRESET_CANOPY);
-                }
-                if ui.button("Cyanobacteria").clicked() {
-                    self.apply_palette(&PRESET_CYANO);
-                }
-                if ui.button("Alga").clicked() {
-                    self.apply_palette(&PRESET_ALGA);
+                if ui.button("Toxic Bloom").clicked() {
+                    self.apply_palette(&PRESET_TOXIC_BLOOM);
                 }
             });
 
