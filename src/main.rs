@@ -3,7 +3,6 @@ use framework_lib::chromium_ec::{CrosEc, CrosEcDriver, EcError};
 use framework_lib::chromium_ec::commands::RgbS;
 
 const COLOR_COUNT: usize = 8;
-const START_KEY: u8 = 0;
 const PRESET_TOXIC_BLOOM: [u32; COLOR_COUNT] = [
     0x39FF14, 0x7FFF00, 0xFFFF00, 0x00FF00, 0x00FF7F, 0x00FFAA, 0xFF10F0, 0x9D00FF,
 ];
@@ -35,7 +34,7 @@ fn rgb_from_u32(value: u32) -> RgbS {
 /// Apply RGB colors starting at a given key index using the Framework EC.
 fn apply_colors(colors: Vec<RgbS>) -> Result<(), EcError> {
     let ec = CrosEc::new();
-    ec.rgbkbd_set_color(START_KEY, colors)
+    ec.rgbkbd_set_color(0, colors)
 }
 
 /// Set the main fan's duty cycle (0-100%) using the Framework EC's `PwmSetFanDuty` command.
