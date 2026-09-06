@@ -323,9 +323,9 @@ impl eframe::App for FanRgbApp {
             if let Some(status) = &self.status {
                 ui.separator();
                 let color = match status.kind {
-                    StatusKind::Info => egui::Color32::LIGHT_GRAY,
-                    StatusKind::Success => egui::Color32::from_rgb(0, 200, 83),
-                    StatusKind::Error => egui::Color32::from_rgb(209, 71, 78),
+                    StatusKind::Info => egui::Color32::LIGHT_YELLOW,
+                    StatusKind::Success => egui::Color32::KHAKI,
+                    StatusKind::Error => egui::Color32::DARK_RED,
                 };
                 ui.colored_label(color, &status.text);
             }
