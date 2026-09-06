@@ -323,7 +323,7 @@ impl eframe::App for FanRgbApp {
             if let Some(status) = &self.status {
                 ui.separator();
                 let color = match status.kind {
-                    StatusKind::Info => egui::Color32::LIGHT_YELLOW,
+                    StatusKind::Info => egui::Color32::LIGHT_BLUE,
                     StatusKind::Success => egui::Color32::KHAKI,
                     StatusKind::Error => egui::Color32::DARK_RED,
                 };
