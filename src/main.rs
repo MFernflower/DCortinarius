@@ -38,7 +38,7 @@ fn apply_colors(colors: Vec<RgbS>) -> Result<(), EcError> {
 }
 
 /// Set the main fan's duty cycle (0-100%) using the Framework EC's `PwmSetFanDuty` command.
-/// Note this differs from the generic PWM_SET_DUTY command — fan duty takes only the
+/// Note this differs from the generic PWM_SET_DUTY command â fan duty takes only the
 /// percentage, with no leading index byte. This command returns no response body.
 fn set_fan_duty(duty_percent: u8) -> Result<(), EcError> {
     let ec = CrosEc::new();
@@ -46,7 +46,7 @@ fn set_fan_duty(duty_percent: u8) -> Result<(), EcError> {
     // Clamp into the valid 0-100% range before sending to the EC.
     let duty = duty_percent.min(100);
 
-    // `percent` is a 32-bit little-endian value, not a single byte — send all four
+    // `percent` is a 32-bit little-endian value, not a single byte â send all four
     // bytes so the EC reads the payload correctly (same as framework-tool / ectool).
     let request = (duty as u32).to_le_bytes();
 
@@ -123,9 +123,10 @@ impl FanRgbApp {
             .unwrap_or([egui::Color32::BLACK; COLOR_COUNT]);
 
         Self {
-            // 0 means "no fan choice made yet" — the fan is only written once the
-            // user explicitly picks 50% or 100%, so we never surprise them.
-            fan_duty: 0,
+            // The fan slider starts at its minimum (10%). The fan is still only
+            // actually written once the user picks "Both LEDs & fan", so we never
+            // surprise them with an unexpected fan speed.
+            fan_duty: 10,
             colors,
             status: Some(StatusMessage {
                 kind: StatusKind::Info,
@@ -166,8 +167,8 @@ impl FanRgbApp {
             return;
         }
 
-        // Fan step: only override the fan if one was actually chosen AND the user
-        // hasn't asked for LED-only writes.
+        // Fan step: only override the fan if the user explicitly asked for it
+        // ("Both LEDs & fan").
         if !self.led_only {
             match set_fan_duty(self.fan_duty) {
                 Ok(()) => {}
@@ -276,19 +277,7 @@ impl eframe::App for FanRgbApp {
 
             ui.separator();
             ui.heading("Fan override");
-            ui.horizontal(|ui| {
-                // Toggle buttons highlight whichever option is currently selected.
-                // `fan_duty == 0` means nothing has been chosen yet, so both stay unhighlighted.
-                let btn_50 = egui::Button::new("50%").selected(self.fan_duty == 50);
-                if ui.add(btn_50).clicked() {
-                    self.fan_duty = 50;
-                }
-
-                let btn_100 = egui::Button::new("100%").selected(self.fan_duty == 100);
-                if ui.add(btn_100).clicked() {
-                    self.fan_duty = 100;
-                }
-            });
+            ui.add(egui::Slider::new(&mut self.fan_duty, 10..=100).suffix("%"));
 
             // Choose whether a write updates the LEDs only, or both LEDs and the fan.
             ui.horizontal(|ui| {
